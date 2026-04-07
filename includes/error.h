@@ -1,6 +1,3 @@
-#ifndef _ERROR
-#define _ERROR
+#pragma once
 
 void error(const char* message);
-
-#endif

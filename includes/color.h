@@ -1,5 +1,4 @@
-#ifndef _COLOR
-#define _COLOR
+#pragma once
 
 #define CLR_RESET "\033[0m"
 
@@ -18,5 +17,3 @@
 #define BG_MAGENTA "\033[45m"
 #define BG_CYAN "\033[46m"
 #define BG_WHITE "\033[47m"
-
-#endif
