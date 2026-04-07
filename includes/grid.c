@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 #include <time.h>
+#include "color.h"
 #include "error.h"
 #include "platform.h"
 
@@ -12,8 +14,15 @@ void show_grid(const Grid* grid, const Cell* cursor_position)
 {
 	reset_cursor();
 
-	char* buffer = malloc(grid->height * (grid->width + 2) + 1);
+	size_t capacity =
+		grid->height * (grid->width + 2) // grid + '\r\n'
+		+ 1; // null terminator
 
+	if (cursor_position)
+		// ANSI color codes for the cursor
+		capacity += strlen(FG_GREEN) + strlen(CLR_RESET);
+
+	char* buffer = malloc(capacity);
 	if (!buffer) {
 		error("Memory (grid buffer) allocation failed");
 		exit(EXIT_FAILURE);
@@ -23,12 +32,19 @@ void show_grid(const Grid* grid, const Cell* cursor_position)
 
 	for (size_t r = 0; r < grid->height; r++) {
 		for (size_t c = 0; c < grid->width; c++) {
-			if (cursor_position && cursor_position->row == r && cursor_position->column == c)
+			if (cursor_position && cursor_position->row == r && cursor_position->column == c) {
+				strcpy(&buffer[pos], FG_GREEN);
+				pos += strlen(FG_GREEN);
+
 				buffer[pos++] = '$';
-			else if (grid->cells[r][c])
+
+				strcpy(&buffer[pos], CLR_RESET);
+				pos += strlen(CLR_RESET);
+			} else if (grid->cells[r][c]) {
 				buffer[pos++] = '#';
-			else
+			} else {
 				buffer[pos++] = ' ';
+			}
 		}
 
 		buffer[pos++] = '\r';
@@ -93,19 +109,17 @@ uint8_t count_neighbors(const Grid* grid, size_t R, size_t C)
 {
 	uint8_t neighbor_count = 0;
 
-	size_t r_low, r_high;
+	size_t r_low = R - 1;
 	if (R == 0) r_low = 0;
-	else r_low = R - 1;
 
+	size_t r_high = R + 2;
 	if (R == grid->height - 1) r_high = grid->height;
-	else r_high = R + 2;
 
-	size_t c_low, c_high;
+	size_t c_low = C - 1;
 	if (C == 0) c_low = 0;
-	else c_low = C - 1;
 
+	size_t c_high = C + 2;
 	if (C == grid->width - 1) c_high = grid->width;
-	else c_high = C + 2;
 
 	for (size_t r = r_low; r < r_high; r++) {
 		for (size_t c = c_low; c < c_high; c++) {

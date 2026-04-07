@@ -85,16 +85,14 @@ gcc main.c includes\*.c -o bin\main.exe
 
 ### Linux and macOS
 
-```bash
-<bin> <height> <width>
+```
+<bin> <height> <width> [<fullness>]
 ```
 
-Replace `<bin>` with your binary file, the default is `bin/main`.
-
-### Windows
-
-```bash
-<bin> <height> <width>
-```
-
-Replace `<bin>` with your executable file, the default is `bin\main.exe`.
+- `<bin>` — Replace with your binary file.
+	- On Linux/macOS the default is `bin/main`
+	- On Windows the default is `bin\main.exe`
+- `<height> <width>` — Height and width of the board.
+- `<fullness>` (optional) — The fullness percentage of active cells (integer from 0 to 100).
+	- 0 means empty.
+	- 100 means full.

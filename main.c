@@ -17,14 +17,20 @@ int main(int argc, char* argv[])
 	clear_screen();
 
 	if (argc < 3) {
-		error("Usage: <prog> <height> <width>");
+		error("Usage: <prog> <height> <width> [<fullness>]");
 		return EXIT_FAILURE;
 	}
 
 	size_t height = (size_t)strtoull(argv[1], NULL, 10);
 	size_t width = (size_t)strtoull(argv[2], NULL, 10);
 
-	Grid* grid_current = generate_grid(height, width, 50);
+	uint8_t active_probability = 10;
+	if (argc == 4)
+		active_probability = (uint8_t)strtoul(argv[3], NULL, 10);
+	if (active_probability > 100)
+		active_probability = 100;
+
+	Grid* grid_current = generate_grid(height, width, active_probability);
 	Grid* grid_next = generate_grid(height, width, 0);
 	Cell cursor_position = { 0, 0 };
 
