@@ -89,7 +89,7 @@ gcc main.c includes\*.c -o bin\main.exe
 <bin> <height> <width>
 ```
 
-Replace `<bin>` with your binary file, the default is to `bin/main`.
+Replace `<bin>` with your binary file, the default is `bin/main`.
 
 ### Windows
 
@@ -97,4 +97,4 @@ Replace `<bin>` with your binary file, the default is to `bin/main`.
 <bin> <height> <width>
 ```
 
-Replace `<bin>` with your executable file, the default is to `bin\main.exe`.
+Replace `<bin>` with your executable file, the default is `bin\main.exe`.
